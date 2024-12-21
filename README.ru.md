@@ -7,7 +7,7 @@
 ### Microservices:
 - proto-common - https://github.com/BornToNight/proto-common
   - Базовые классы gRPC (**main** и **reader**).
-- **main** - https://github.com/BornToNight/main :5001
+- :white_check_mark: **main** - https://github.com/BornToNight/main :5001
   - Основной сервис, front (postman) общается **ТОЛЬКО** с main. Включает в себя **docker-compose** и **k8s** конфиги.
 - writer - https://github.com/BornToNight/writer :5002
   - Микросервис для практики по работе с **Kafka**. Получает сообщения из Kafka и записывает в PostgreSQL.
@@ -15,6 +15,8 @@
   - Микросервис для практики по работе с **gRPC**. **main** может отправить запрос в **reader**.
 - admin - https://github.com/BornToNight/admin :5004
   - Spring Admin UI для мониторинка сервисов.  
+
+![drawio2](https://github.com/user-attachments/assets/cd5bb990-c4b6-4c34-8477-1e75c0c68cf5)
 
 ### Стэк:
 - Java 21
@@ -127,10 +129,19 @@ minikube dashboard
 
 ## 8. Ты можешь открыть
 1. Spring admin (compose - http://localhost:5004, k8s - http://pet.admin)
+![Spring Admin](https://github.com/user-attachments/assets/76484c16-8e40-4ecb-949d-afe950ffb1b6)
 2. Grafana (compose - http://localhost:3000, k8s - http://pet.grafana)
+![Grafana](https://github.com/user-attachments/assets/f9244000-df7e-4d7b-b29f-710d3de314b4)
 3. Prometheus (compose - http://localhost:9090, k8s - http://pet.prometheus)
+![Prometheus](https://github.com/user-attachments/assets/5da375cf-1e04-4175-bd46-6fc6be8df889)
 4. Kibana (compose - http://localhost:5601, k8s - http://pet.kibana)
-5. Kubernetes Dashboard (только k8s, открывается в браузере с помощью команды)
+![Kibana](https://github.com/user-attachments/assets/0a6d9fc5-4608-439a-a137-35ebe3527a5e)
+5. Swagger (compose - http://localhost:5001/swagger-ui/index.html, k8s - http://pet.main/swagger-ui/index.html)
+![Swagger](https://github.com/user-attachments/assets/8e8e0fcc-06e3-4aa7-8596-682e95d08707)
+6. Graphiql (compose - http://localhost:5001/graphiql k8s - http://pet.main/graphiql)
+![GraphiQL](https://github.com/user-attachments/assets/05f56c49-36e8-45a2-85b0-1fd0edbeb3ec)
+7. Kubernetes Dashboard (только k8s, открывается в браузере с помощью команды)
+![Kubernetes Dashboard](https://github.com/user-attachments/assets/201e0933-0f4b-428f-9487-59c691af6061)
 
 ## Неявные случаи
 1. Если ты используешь PostgreSQL на локальной машине - тебе нужно создать пользователя с логином "admindb"

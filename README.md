@@ -7,7 +7,7 @@ The goal of this project is to practice with the most popular stack for Java/Kot
 ### Microservices:
 - proto-common - https://github.com/BornToNight/proto-common  
   - Basic gRPC classes (**main** and **reader**).
-- **main** - https://github.com/BornToNight/main :5001  
+- :white_check_mark: **main** - https://github.com/BornToNight/main :5001  
   - The main service, front (postman) communicates **ONLY** with main. Includes **docker-compose** and **k8s** configurations.
 - writer - https://github.com/BornToNight/writer :5002  
   - Microservice for Kafka practice. Receives messages from Kafka and writes them to PostgreSQL.
@@ -15,6 +15,8 @@ The goal of this project is to practice with the most popular stack for Java/Kot
   - Microservice for gRPC practice. **main** can send requests to **reader**.
 - admin - https://github.com/BornToNight/admin :5004  
   - Spring Admin UI for service monitoring.
+
+![drawio2](https://github.com/user-attachments/assets/cd5bb990-c4b6-4c34-8477-1e75c0c68cf5)
 
 ### Stack:
 - Java 21
@@ -127,10 +129,20 @@ minikube dashboard
 
 ## 8. You can open:
 1. Spring admin (compose - http://localhost:5004, k8s - http://pet.admin)
+![Spring Admin](https://github.com/user-attachments/assets/76484c16-8e40-4ecb-949d-afe950ffb1b6)
 2. Grafana (compose - http://localhost:3000, k8s - http://pet.grafana)
+![Grafana](https://github.com/user-attachments/assets/f9244000-df7e-4d7b-b29f-710d3de314b4)
 3. Prometheus (compose - http://localhost:9090, k8s - http://pet.prometheus)
+![Prometheus](https://github.com/user-attachments/assets/5da375cf-1e04-4175-bd46-6fc6be8df889)
 4. Kibana (compose - http://localhost:5601, k8s - http://pet.kibana)
-5. Kubernetes Dashboard (only k8s, opens in the browser via the command)
+![Kibana](https://github.com/user-attachments/assets/0a6d9fc5-4608-439a-a137-35ebe3527a5e)
+5. Swagger (compose - http://localhost:5001/swagger-ui/index.html, k8s - http://pet.main/swagger-ui/index.html)
+![Swagger](https://github.com/user-attachments/assets/8e8e0fcc-06e3-4aa7-8596-682e95d08707)
+6. Graphiql (compose - http://localhost:5001/graphiql k8s - http://pet.main/graphiql)
+![GraphiQL](https://github.com/user-attachments/assets/05f56c49-36e8-45a2-85b0-1fd0edbeb3ec)
+7. Kubernetes Dashboard (only k8s, opens in the browser via the command)
+![Kubernetes Dashboard](https://github.com/user-attachments/assets/201e0933-0f4b-428f-9487-59c691af6061)
+
 
 ## Implicit cases
 1. If you are using PostgreSQL on your local machine, you need to create a user with the login "admindb"

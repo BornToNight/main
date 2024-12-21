@@ -148,5 +148,5 @@ minikube dashboard
 1. If you are using PostgreSQL on your local machine, you need to create a user with the login "admindb"
 
 ## Contacts
-Feel free to ask questions or suggest improvements :) <br>
+Feel free to ask questions or suggest improvements :sunglasses: <br>
 Telegram - [@BTNtelegram](https://t.me/BTNtelegram)

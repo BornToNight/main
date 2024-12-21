@@ -1,6 +1,6 @@
 # Backend Application with Top Stack for Microservices Architecture  
 ## Microservice - Main  
-[![ru](https://img.shields.io/badge/lang-ru-green.svg)](https://github.com/BornToNight/Digital-Photo-Frame/blob/main/README.md)
+[![ru](https://img.shields.io/badge/lang-ru-green.svg)](https://github.com/BornToNight/main/blob/main/README.ru.md)
 
 The goal of this project is to practice with the most popular stack for Java/Kotlin developers (IMHO).
 

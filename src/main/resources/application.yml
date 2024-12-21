@@ -1,0 +1,169 @@
+application:
+  kafka:
+    topic: ${KAFKA_TOPIC}
+
+task:
+  schedule:
+    increase-count:
+      delay: ${TASK_INCREASE_COUNT_DELAY}
+      initialDelay: ${TASK_INCREASE_COUNT_INITIAL_DELAY}
+
+spring:
+  application:
+    name: main
+  config:
+    import: optional:file:.env[.properties]
+  security:
+    user:
+      name: ${SPRING_USER}
+      password: ${SPRING_PASSWORD}
+  boot:
+    admin:
+      client:
+        url: http://${SPRING_ADMIN_HOST}:5004
+        # от server
+        username: ${SPRING_ADMIN_USER}
+        password: ${SPRING_ADMIN_PASSWORD}
+        instance:
+          prefer-ip: true
+          metadata:
+            # от server
+            user:
+              name: ${SPRING_ADMIN_USER}
+              password: ${SPRING_ADMIN_PASSWORD}
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_HOST}:9092
+      client-id: ${KAFKA_CLIENT_ID}
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+      password: ${REDIS_PASSWORD} # EXPLAIN_V в BASE64
+    web:
+      pageable:
+        default-page-size: 50
+        max-page-size: 50
+        one-indexed-parameters: true
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      properties:
+        hibernate:
+          format_sql: true
+      enable_lazy_load_no_trans: true
+      event:
+        merge:
+          entity_copy_observer: allow
+    open-in-view: false # EXPLAIN_V Держать ли открытой транзакцию пока открыт HTTP запрос
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db-changelog.yml
+  docker:
+    compose:
+      enabled: false
+      skip:
+        in-test: false
+  cache:
+    type: redis
+    cache-names: redis-cache
+  graphql:
+    graphiql:
+      enabled: true
+
+server:
+  port: 5001
+  max-http-header-size: 100000
+
+# Настройка Actuator
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*" # EXPLAIN_V Открыть у актуатора больше запросов для метрик
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+
+logging:
+  path: ${user.home}/logs/main
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: TRACE
+
+openapi:
+  local-url: http://${SWAGGER_HOST}
+  dev-url: http://162.16.20.80:5001
+
+springdoc:
+  show-login-endpoint: true
+  api-docs:
+    enabled: true
+    path: /apiDocs
+  swagger-ui:
+    enabled: true
+    path: /swagger
+    filter: true
+    tryItOutEnabled: true
+    tagsSorter: alpha
+    docExpansion: none
+    defaultModelsExpandDepth: 10
+
+jwt:
+  key: ${JWT_KEY}
+  access-token-expiration: ${ACCESS_TOKEN_EXPIRATION}
+  refresh-token-expiration: ${REFRESH_TOKEN_EXPIRATION}
+
+grpc:
+  client:
+    GLOBAL:
+      negotiationType: PLAINTEXT
+    reader-server:
+      address: static://${GRPC_HOST}:5002
+
+---
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+    activate:
+      on-profile: "prod"
+  jpa:
+    show-sql: false
+  liquibase:
+    enabled: true
+
+logging:
+  level:
+    root: WARN
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: INFO
+
+springdoc:
+  show-login-endpoint: false
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

@@ -60,7 +60,7 @@ dependencies {
     implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:$shedlockVer")
     implementation("org.mapstruct:mapstruct:$mapStructVer")
     implementation("io.github.resilience4j:resilience4j-spring-boot3:$resilience4jVer")
-    annotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVer")
+    implementation("org.mapstruct:mapstruct-processor:$mapStructVer")
     annotationProcessor("org.projectlombok:lombok:$lombokVer")
     annotationProcessor("org.hibernate:hibernate-jpamodelgen:$jpamodelgenVer")
     // EXPLAIN_V Генерация класса Entity с полями для Criteria

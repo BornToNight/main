@@ -78,4 +78,11 @@ public class CertificateController {
         }
     }
 
+    @Operation(summary = "Создание по 500 пользователей в 3-ёх потоках")
+    @PostMapping("/massiveCreation")
+    public void massiveCreation(
+    ) {
+        service.massiveCreation();
+    }
+
 }

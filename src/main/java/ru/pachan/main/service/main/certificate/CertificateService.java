@@ -17,4 +17,6 @@ public interface CertificateService {
 
     void deleteOne(long id);
 
+    void massiveCreation();
+
 }

@@ -28,7 +28,8 @@ public enum ExceptionEnum {
     OBJECT_NOT_FOUND("Объект не найден"),
     DUPLICATE_UNIQUE_FIELD("Объект с таким уникальным полем уже существует"), // + " - *введённые данные уникального поля*"
     NOT_FOUND_REFERENCE("Попытка связи с несуществующим объектом"),
-    NOT_VALID_QUERY_PARAMETERS("Неверные параметры запроса");
+    NOT_VALID_QUERY_PARAMETERS("Неверные параметры запроса"),
+    SERVICE_UNAVAILABLE("Сервис временно недоступен");
 
     private final String message;
 }

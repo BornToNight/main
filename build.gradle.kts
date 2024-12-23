@@ -17,6 +17,7 @@ val testcontainersJunitVer: String by project // 1.20.0
 val logstashEncoderVer: String by project // 8.0
 val shedlockVer: String by project // 5.15.1
 val mapStructVer: String by project // 1.6.3
+val resilience4jVer: String by project // 2.2.0
 
 plugins {
     java
@@ -57,6 +58,7 @@ dependencies {
     implementation("net.javacrumbs.shedlock:shedlock-spring:$shedlockVer")
     implementation("net.javacrumbs.shedlock:shedlock-provider-jdbc-template:$shedlockVer")
     implementation("org.mapstruct:mapstruct:$mapStructVer")
+    implementation("io.github.resilience4j:resilience4j-spring-boot3:$resilience4jVer")
     annotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVer")
     annotationProcessor("org.projectlombok:lombok:$lombokVer")
     annotationProcessor("org.hibernate:hibernate-jpamodelgen:$jpamodelgenVer")

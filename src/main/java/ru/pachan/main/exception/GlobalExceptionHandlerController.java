@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import ru.pachan.main.exception.data.RequestException;
+import ru.pachan.main.exception.data.RequestSystemException;
 
 import static org.springframework.http.HttpStatus.*;
 import static ru.pachan.main.util.enums.ExceptionEnum.*;
@@ -16,8 +17,13 @@ import static ru.pachan.main.util.enums.ExceptionEnum.*;
 @RestControllerAdvice
 public class GlobalExceptionHandlerController {
 
+    @ExceptionHandler(RequestSystemException.class)
+    ResponseEntity<String> handleRequestSystemException(HttpServletResponse res, RequestSystemException e) {
+        return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());
+    }
+
     @ExceptionHandler(RequestException.class)
-    ResponseEntity<String> handleCustomException(HttpServletResponse res, RequestException e) {
+    ResponseEntity<String> handleRequestException(HttpServletResponse res, RequestException e) {
         return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());
     }
 

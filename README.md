@@ -23,6 +23,7 @@ The goal of this project is to practice with the most popular stack for Java/Kot
 - Spring 3.3.1
 - Hibernate (@Query, Specification, @EntityGraph)
 - Scheduler (+ @SchedulerLock)
+- CircuitBreaker, Retry
 - Swagger (**main**)
 - MapStruct (**main**)
 - Tests (Testcontainers (integration), AutoConfigureGraphQlTester) (**main**)

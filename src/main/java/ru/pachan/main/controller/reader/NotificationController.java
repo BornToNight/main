@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.pachan.main.dto.reader.NotificationDto;
 import ru.pachan.main.exception.data.RequestException;
+import ru.pachan.main.exception.data.RequestSystemException;
 import ru.pachan.main.service.reader.notification.NotificationService;
 
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class NotificationController {
     @GetMapping("/{id}")
     public ResponseEntity<NotificationDto> getOne(
             @PathVariable long id
-    ) throws RequestException {
+    ) throws RequestException, RequestSystemException {
         return ResponseEntity.ok(service.findByIdNotification(id));
     }
 
@@ -32,7 +33,7 @@ public class NotificationController {
     @GetMapping("/personId/{id}")
     public ResponseEntity<NotificationDto> getOneByPersonId(
             @PathVariable long id
-    ) throws RequestException {
+    ) throws RequestException, RequestSystemException {
         return ResponseEntity.ok(service.findByPersonIdNotification(id));
     }
 

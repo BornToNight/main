@@ -140,6 +140,53 @@ grpc:
     reader-server:
       address: static://${GRPC_HOST}:5002
 
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        # EXPLAIN_V два возможных значения COUNT_BASED, TIME_BASED, по ум. COUNT_BASED
+        slidingWindowType: COUNT_BASED
+        # EXPLAIN_V размер sliding window, при COUNT_BASED - обозначает количество запросов, при TIME_BASED - количество секунд, по ум. 100
+        slidingWindowSize: 100
+        # EXPLAIN_V количество запросов, которые необходимо выполнить в HALF_OPEN состоянии, по ум. 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        # EXPLAIN_V время, по которому определяется что запрос является медленным, по ум. 60000 мс
+        slowCallDurationThreshold: 4s
+        # EXPLAIN_V порог медленных запросов (запрос считается медленным, если выполняется дольше, чем указано в настройке slowCallDurationThreshold), по ум. 100
+        slowCallRateThreshold: 90
+        # EXPLAIN_V порог невалидных запросов, по ум. 50%
+        failureRateThreshold: 50
+        # EXPLAIN_V время, в течение которого состояние остается OPEN, после чего переходит в HALF_OPEN, по ум. 60000 мс
+        waitDurationInOpenState: 10s
+        # EXPLAIN_V минимальное количество вызовов, по которым принимается решение о переключении состояния.
+        # Если тип скользящего окна TIME_BASED, то данное минимальное количество вызовов должно быть выполнено за указанный период в slidingWindowSize, по ум. 100
+        minimumNumberOfCalls: 3
+        # EXPLAIN_V список исключений, которые будут явно проигнорированы, при определении невалидных запросов. При выбросе данных исключений они не будут расценены ни как валидные, ни как невалидные, по ум. пустой
+        ignoreExceptions:
+          - ru.pachan.main.exception.data.RequestException
+    instances:
+      writerCircuitBreaker:
+        baseConfig: default
+        waitDurationInOpenState: 20s
+      myCircuitBreaker2:
+        baseConfig: default
+        waitDurationInOpenState: 30s
+  retry:
+    configs:
+      default:
+        # EXPLAIN_V максимальное количество попыток, включая первый вызов, по ум. 3
+        maxAttempts: 3
+        # EXPLAIN_V фиксированное время между попытками, по ум. 500 мс
+        waitDuration: 100ms
+        # EXPLAIN_V список ошибок, по которым должен быть выполнены retry, по ум. пустой
+#        retryExceptions:
+        # EXPLAIN_V список исключений, которые будут явно проигнорированы, при определении невалидных запросов. При выбросе данных исключений они не будут расценены ни как валидные, ни как невалидные, по ум. пустой
+        ignoreExceptions:
+          - ru.pachan.main.exception.data.RequestException
+    instances:
+      writerRetry:
+        baseConfig: default
+
 ---
 
 spring:

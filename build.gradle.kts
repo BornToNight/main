@@ -15,6 +15,8 @@ val jpamodelgenVer: String by project // 6.4.4.Final
 val graphQlTestVer: String by project // 1.3.2
 val testcontainersJunitVer: String by project // 1.20.0
 val logstashEncoderVer: String by project // 8.0
+val shedlockVer: String by project // 5.15.1
+val mapStructVer: String by project // 1.6.3
 
 plugins {
     java
@@ -52,8 +54,10 @@ dependencies {
 //	EXPLAIN_V Для интеграционных тестов
     implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootStarterVer")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVer")
-    implementation("net.javacrumbs.shedlock:shedlock-spring:5.15.1")
-    implementation("net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.15.1")
+    implementation("net.javacrumbs.shedlock:shedlock-spring:$shedlockVer")
+    implementation("net.javacrumbs.shedlock:shedlock-provider-jdbc-template:$shedlockVer")
+    implementation("org.mapstruct:mapstruct:$mapStructVer")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVer")
     annotationProcessor("org.projectlombok:lombok:$lombokVer")
     annotationProcessor("org.hibernate:hibernate-jpamodelgen:$jpamodelgenVer")
     // EXPLAIN_V Генерация класса Entity с полями для Criteria

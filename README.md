@@ -24,6 +24,7 @@ The goal of this project is to practice with the most popular stack for Java/Kot
 - Hibernate (@Query, Specification, @EntityGraph)
 - Scheduler (+ @SchedulerLock)
 - Swagger (**main**)
+- MapStruct (**main**)
 - Tests (Testcontainers (integration), AutoConfigureGraphQlTester) (**main**)
 - PostgreSQL
 - Liquibase (**main**)

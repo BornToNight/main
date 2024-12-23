@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.pachan.main.dto.dictionary.PaginatedResponse;
 import ru.pachan.main.dto.main.PersonDto;
+import ru.pachan.main.dto.main.PersonNameAndOrgNameDto;
+import ru.pachan.main.dto.main.PersonNameDto;
 import ru.pachan.main.exception.data.RequestException;
 import ru.pachan.main.model.main.Person;
 import ru.pachan.main.service.main.person.PersonService;
@@ -50,6 +52,22 @@ public class PersonController {
         // EXPLAIN_V Пример для сохранения в elastic
         log.info("PersonController getAll");
         return ResponseEntity.ok(service.getAll(pageable, firstName, firstNames));
+    }
+
+    @Operation(summary = "Возвращение всех имён persons")
+    @GetMapping("/names")
+    public ResponseEntity<PaginatedResponse<PersonNameDto>> getAllNames(
+            @ParameterObject Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.getAllNames(pageable));
+    }
+
+    @Operation(summary = "Возвращение всех имён persons с именем организации")
+    @GetMapping("/namesAndOrgNames")
+    public ResponseEntity<PaginatedResponse<PersonNameAndOrgNameDto>> getAllNamesAndOrgNames(
+            @ParameterObject Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.getAllNamesAndOrgNames(pageable));
     }
 
     @Operation(summary = "Возвращение по переданному id")

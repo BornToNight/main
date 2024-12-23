@@ -24,6 +24,7 @@
 - Hibernate (@Query, Specification, @EntityGraph)
 - Scheduler (+ @SchedulerLock)
 - Swagger (**main**)
+- MapStruct (**main**)
 - Tests (Testcontainers (integration), AutoConfigureGraphQlTester) (**main**)
 - PostgreSQL
 - Liquibase (**main**)

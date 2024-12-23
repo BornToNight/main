@@ -3,6 +3,8 @@ package ru.pachan.main.service.main.person;
 import org.springframework.data.domain.Pageable;
 import ru.pachan.main.dto.dictionary.PaginatedResponse;
 import ru.pachan.main.dto.main.PersonDto;
+import ru.pachan.main.dto.main.PersonNameAndOrgNameDto;
+import ru.pachan.main.dto.main.PersonNameDto;
 import ru.pachan.main.exception.data.RequestException;
 import ru.pachan.main.model.main.Person;
 import ru.pachan.main.model.main.PersonQueryBuilder;
@@ -12,6 +14,10 @@ import java.util.List;
 public interface PersonService {
 
     PaginatedResponse<PersonDto> getAll(Pageable pageable, String firstName, List<String> firstNames);
+
+    PaginatedResponse<PersonNameDto> getAllNames(Pageable pageable);
+
+    PaginatedResponse<PersonNameAndOrgNameDto> getAllNamesAndOrgNames(Pageable pageable);
 
     PaginatedResponse<PersonQueryBuilder> getAllWithSqlQueryBuilder(String firstName, List<String> firstNames);
 

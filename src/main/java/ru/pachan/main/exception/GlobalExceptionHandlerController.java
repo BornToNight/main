@@ -25,7 +25,7 @@ public class GlobalExceptionHandlerController {
     ResponseEntity<String> handleSQLUniqueFieldException(DataIntegrityViolationException e) {
         String field = "";
         if (e.getMessage() != null && !e.getMessage().isBlank()) {
-            if (e.getMessage().contains("not present in table")) {
+            if (e.getMessage().contains("not present in table") || e.getMessage().contains("отсутствует в таблице")) {
                 return new ResponseEntity<>(NOT_FOUND_REFERENCE.getMessage(), GONE);
             } else if (e.getMessage().contains("overflow")) {
                 return new ResponseEntity<>(INVALID_DATA_FORMAT.getMessage(), BAD_REQUEST);

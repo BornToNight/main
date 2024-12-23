@@ -84,7 +84,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Caching(
-            cacheable = @Cacheable(value = "OrganizationService::getOne", key = "#organization.id"),
             evict = @CacheEvict(value = "OrganizationService::getAll", allEntries = true)
     )
     @Override

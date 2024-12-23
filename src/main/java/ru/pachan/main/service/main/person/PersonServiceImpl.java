@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.pachan.main.dto.dictionary.PaginatedResponse;
 import ru.pachan.main.dto.main.PersonDto;
+import ru.pachan.main.dto.main.PersonNameAndOrgNameDto;
+import ru.pachan.main.dto.main.PersonNameDto;
 import ru.pachan.main.exception.data.RequestException;
+import ru.pachan.main.mapper.PersonMapper;
 import ru.pachan.main.model.main.Person;
 import ru.pachan.main.model.main.PersonQueryBuilder;
 import ru.pachan.main.repository.main.person.PersonDao;
@@ -26,12 +29,28 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository repository;
     private final PersonDao personDao;
+    private final PersonMapper personMapper;
 
     @Transactional
     @Override
     public PaginatedResponse<PersonDto> getAll(Pageable pageable, String firstName, List<String> firstNames) {
         Page<PersonDto> persons = repository.findAllPersonsDTOWithFilters(firstName, firstNames, pageable);
         return new PaginatedResponse<>(persons.getTotalElements(), persons.getContent());
+    }
+
+    @Transactional
+    @Override
+    public PaginatedResponse<PersonNameDto> getAllNames(Pageable pageable) {
+        Page<Person> persons = repository.findAll(pageable);
+        return new PaginatedResponse<>(persons.getTotalElements(), personMapper.toPersonNameListDto(persons.getContent()));
+    }
+
+    @Transactional
+    @Override
+    public PaginatedResponse<PersonNameAndOrgNameDto> getAllNamesAndOrgNames(Pageable pageable) {
+        Page<Person> persons = repository.findAll(pageable);
+        // ATTENTION будет n+1 - энтити граф может исправить ситуацию
+        return new PaginatedResponse<>(persons.getTotalElements(), personMapper.toPersonNameAndOrgNameListDto(persons.getContent()));
     }
 
     @Override

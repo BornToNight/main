@@ -23,6 +23,7 @@
 - Spring 3.3.1
 - Hibernate (@Query, Specification, @EntityGraph)
 - Scheduler (+ @SchedulerLock)
+- CircuitBreaker, Retry
 - Swagger (**main**)
 - MapStruct (**main**)
 - Tests (Testcontainers (integration), AutoConfigureGraphQlTester) (**main**)

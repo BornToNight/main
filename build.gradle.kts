@@ -60,8 +60,9 @@ dependencies {
     implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:$shedlockVer")
     implementation("org.mapstruct:mapstruct:$mapStructVer")
     implementation("io.github.resilience4j:resilience4j-spring-boot3:$resilience4jVer")
-    implementation("org.mapstruct:mapstruct-processor:$mapStructVer")
+    // ATTENTION EXPLAIN_V lombok ДОЛЖЕН идти перед mapstruct
     annotationProcessor("org.projectlombok:lombok:$lombokVer")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVer")
     annotationProcessor("org.hibernate:hibernate-jpamodelgen:$jpamodelgenVer")
     // EXPLAIN_V Генерация класса Entity с полями для Criteria
     compileOnly("org.hibernate:hibernate-jpamodelgen:$jpamodelgenVer")

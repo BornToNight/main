@@ -54,7 +54,6 @@ public class CertificateServiceImpl implements CertificateService {
         repository.deleteById(id);
     }
 
-    @Transactional
     @Override
     public void massiveCreation() {
         int threadCount = 3;

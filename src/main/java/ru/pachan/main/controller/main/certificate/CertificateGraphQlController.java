@@ -33,18 +33,20 @@ public class CertificateGraphQlController {
     @QueryMapping
     public Iterable<Certificate> certificates(DataFetchingEnvironment environment) {
         DataFetchingFieldSelectionSet s = environment.getSelectionSet();
-        if (s.contains("person"))
+        if (s.contains("person")) {
             return repository.findAll(fetchPerson());
-        else
+        } else {
             return repository.findAll();
+        }
     }
 
     @QueryMapping
     public Certificate certificate(@Argument Integer id, DataFetchingEnvironment environment) {
         Specification<Certificate> spec = byId(id);
         DataFetchingFieldSelectionSet selectionSet = environment.getSelectionSet();
-        if (selectionSet.contains(Certificate_.person.getName()))
+        if (selectionSet.contains(Certificate_.person.getName())) {
             spec = spec.and(fetchPerson());
+        }
         return repository.findOne(spec).orElseThrow(NoSuchElementException::new);
     }
 

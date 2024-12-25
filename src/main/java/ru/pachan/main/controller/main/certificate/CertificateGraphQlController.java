@@ -42,8 +42,7 @@ public class CertificateGraphQlController {
     @QueryMapping
     public Certificate certificate(@Argument Integer id, DataFetchingEnvironment environment) {
         Specification<Certificate> spec = byId(id);
-        DataFetchingFieldSelectionSet selectionSet = environment
-                .getSelectionSet();
+        DataFetchingFieldSelectionSet selectionSet = environment.getSelectionSet();
         if (selectionSet.contains(Certificate_.person.getName()))
             spec = spec.and(fetchPerson());
         return repository.findOne(spec).orElseThrow(NoSuchElementException::new);

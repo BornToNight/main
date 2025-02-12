@@ -17,10 +17,10 @@ public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecif
 
     @Query(
             "SELECT new ru.pachan.main.dto.main.PersonDto(p.id, p.firstName, p.surname, p.organization.name)" +
-                    "FROM Person p" +
-                    "   WHERE " +
-                    "   (LOWER(firstName) LIKE CONCAT('%', LOWER(:firstName), '%') OR :firstName IS NULL)" +
-                    "   AND (firstName IN (:firstNames) OR :firstNames IS NULL )"
+            "FROM Person p" +
+            "   WHERE " +
+            "   (LOWER(firstName) LIKE CONCAT('%', LOWER(:firstName), '%') OR :firstName IS NULL)" +
+            "   AND (firstName IN (:firstNames) OR :firstNames IS NULL )"
     )
     Page<PersonDto> findAllPersonsDTOWithFilters(
             @Param("firstName") String firstName,

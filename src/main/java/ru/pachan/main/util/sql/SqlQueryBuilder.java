@@ -50,8 +50,8 @@ public class SqlQueryBuilder<T> {
 
     private String makeResultQuery(String queryTemplate, Long limit, String order, OrderDirection orderDirection) {
         return queryTemplate.replace("{}", "*")
-                + makeOrderByQuery(order, orderDirection)
-                + makeLimitQuery(limit);
+               + makeOrderByQuery(order, orderDirection)
+               + makeLimitQuery(limit);
     }
 
     private String makeCountQuery(String queryTemplate) {

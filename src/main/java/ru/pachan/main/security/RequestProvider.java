@@ -112,11 +112,15 @@ public class RequestProvider {
         }
 
         try {
-            if (Objects.equals(httpServletRequest.getMethod(), HttpMethod.GET.name()) ||
+            if (
+                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.GET.name()) ||
                     Objects.equals(httpServletRequest.getMethod(), HttpMethod.POST.name()) ||
-                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.PUT.name())) {
-                if (path.size() == 4 && (Objects.equals(path.get(2), "user") || Objects.equals(path.get(2), "refresh"))
-                        || path.size() == 3 && Objects.equals(path.get(2), "refresh")
+                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.PUT.name())
+            ) {
+                if (
+                        path.size() == 4 &&
+                        (Objects.equals(path.get(2), "user") || Objects.equals(path.get(2), "refresh")) ||
+                        path.size() == 3 && Objects.equals(path.get(2), "refresh")
                 ) return;
             }
         } catch (NullPointerException e) {

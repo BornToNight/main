@@ -29,8 +29,8 @@ public class RolePermissionPermissionLevelId implements Serializable {
 
         RolePermissionPermissionLevelId rolePermissionPermissionLevelId = (RolePermissionPermissionLevelId) obj;
         return Objects.equals(this.roleId, rolePermissionPermissionLevelId.roleId) &&
-                Objects.equals(this.permissionId, rolePermissionPermissionLevelId.permissionId) &&
-                Objects.equals(this.permissionLevelId, rolePermissionPermissionLevelId.permissionLevelId);
+               Objects.equals(this.permissionId, rolePermissionPermissionLevelId.permissionId) &&
+               Objects.equals(this.permissionLevelId, rolePermissionPermissionLevelId.permissionLevelId);
     }
 
     @Override

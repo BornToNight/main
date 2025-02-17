@@ -14,6 +14,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import lombok.Getter;
@@ -83,7 +84,12 @@ public class Person implements Serializable {
     private Set<Skill> skills;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "persons_seq",
+            sequenceName = "persons_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "persons_seq")
     @Column(name = "person_id")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long id;

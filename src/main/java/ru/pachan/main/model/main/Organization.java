@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +40,12 @@ public class Organization implements Serializable {
     private Set<Person> persons;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "organizations_seq",
+            sequenceName = "organizations_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "organizations_seq")
     @Column(name = "organization_id")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long id;

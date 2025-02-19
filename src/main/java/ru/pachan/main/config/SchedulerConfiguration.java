@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableSchedulerLock(defaultLockAtMostFor = "9s")
 public class SchedulerConfiguration {
 
+// EXPLAIN_V Для постгри
 //    @Bean
 //    public LockProvider lockProvider(final DataSource dataSource) {
 //        return new JdbcTemplateLockProvider(dataSource);

@@ -1,4 +1,4 @@
-package ru.pachan.main.model.auth.rolePermissionPermissionLevel;
+package ru.pachan.main.model.auth.role_permission_permission_level;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

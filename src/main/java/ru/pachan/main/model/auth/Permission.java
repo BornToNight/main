@@ -17,7 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import ru.pachan.main.model.auth.rolePermissionPermissionLevel.RolePermissionPermissionLevel;
+import ru.pachan.main.model.auth.role_permission_permission_level.RolePermissionPermissionLevel;
 
 import java.util.List;
 

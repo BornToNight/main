@@ -22,6 +22,12 @@ import java.io.Serializable;
 @Table(name = "persons")
 public class PersonQueryBuilder implements Serializable {
 
+    @Column
+    private String firstName;
+
+    @Column
+    private String surname;
+
     @Id
     @SequenceGenerator(
             name = "persons_seq",
@@ -31,11 +37,5 @@ public class PersonQueryBuilder implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "persons_seq")
     @Column(name = "person_id")
     private long id;
-
-    @Column
-    private String firstName;
-
-    @Column
-    private String surname;
 
 }

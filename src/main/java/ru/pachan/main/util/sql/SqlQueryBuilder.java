@@ -21,7 +21,8 @@ public class SqlQueryBuilder<T> {
             Long limit,
             String order,
             OrderDirection orderDirection,
-            boolean fetchData) {
+            boolean fetchData
+    ) {
         SqlBuilderResult<T> sqlBuilderResult = new SqlBuilderResult<>();
         String queryTemplate = makeQueryTemplate(parameters);
         if (fetchData) {

@@ -30,8 +30,8 @@ public class RequestProvider {
     private String secretKey;
 
     private final UserRepository userRepository;
-    private final TokenSearcher tokenSearcher;
     private final PermissionLevelRepository permissionLevelRepository;
+    private final TokenSearcher tokenSearcher;
 
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

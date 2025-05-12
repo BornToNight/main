@@ -13,6 +13,7 @@ import ru.pachan.main.exception.data.RequestException;
 import ru.pachan.main.repository.auth.PermissionLevelRepository;
 import ru.pachan.main.repository.auth.UserRepository;
 import ru.pachan.main.util.auth.TokenSearcher;
+import ru.pachan.main.util.enums.PermissionLevelEnum;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,16 +66,28 @@ public class RequestProvider {
                 return;
             }
             Short permission = getPermission(token, path.get(2));
-            if (Objects.equals(httpServletRequest.getMethod(), HttpMethod.GET.name()) && permission < 1) {
+            if (
+                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.GET.name())
+                    && permission < PermissionLevelEnum.PERMISSION_READ.getPermissionLevel()
+            ) {
                 throw new RequestException(PERMISSION_DENIED.getMessage(), FORBIDDEN);
             }
-            if (Objects.equals(httpServletRequest.getMethod(), HttpMethod.POST.name()) && permission < 2) {
+            if (
+                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.POST.name())
+                    && permission < PermissionLevelEnum.PERMISSION_WRITE.getPermissionLevel()
+            ) {
                 throw new RequestException(PERMISSION_DENIED.getMessage(), FORBIDDEN);
             }
-            if (Objects.equals(httpServletRequest.getMethod(), HttpMethod.PUT.name()) && permission < 3) {
+            if (
+                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.PUT.name())
+                    && permission < PermissionLevelEnum.PERMISSION_UPDATE.getPermissionLevel()
+            ) {
                 throw new RequestException(PERMISSION_DENIED.getMessage(), FORBIDDEN);
             }
-            if (Objects.equals(httpServletRequest.getMethod(), HttpMethod.DELETE.name()) && permission < 4) {
+            if (
+                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.DELETE.name())
+                    && permission < PermissionLevelEnum.PERMISSION_DELETE.getPermissionLevel()
+            ) {
                 throw new RequestException(PERMISSION_DENIED.getMessage(), FORBIDDEN);
             }
         } catch (NullPointerException e) {

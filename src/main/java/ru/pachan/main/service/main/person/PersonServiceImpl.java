@@ -63,7 +63,7 @@ public class PersonServiceImpl implements PersonService {
     public PaginatedResponse<PersonDto> getAllWithSpecification(Pageable pageable, String firstName) {
         PersonSpecification specification = new PersonSpecification(firstName);
         Page<Person> persons = repository.findAll(specification, pageable);
-        List<PersonDto> result = persons.getContent().stream().map(it -> new PersonDto(it.getId(), it.getFirstName(), it.getSurname(), it.getOrganization().getName())).toList();
+        List<PersonDto> result = persons.getContent().stream().map(it -> new PersonDto(it.getId(), it.getFirstName(), it.getOrganization().getName())).toList();
         return new PaginatedResponse<>(persons.getTotalElements(), result);
     }
 
@@ -84,7 +84,7 @@ public class PersonServiceImpl implements PersonService {
         Person oldPerson = repository.findById(id).orElseThrow(() ->
                 new RequestException(OBJECT_NOT_FOUND.getMessage(), UNAUTHORIZED));
         oldPerson.setFirstName(person.getFirstName());
-        oldPerson.setSurname(person.getSurname());
+//        oldPerson.setSurname(person.getSurname());
         oldPerson.setSalaryRub(person.getSalaryRub());
         oldPerson.setHobby(person.getHobby());
         return repository.save(oldPerson);

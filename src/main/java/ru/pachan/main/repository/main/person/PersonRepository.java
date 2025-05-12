@@ -16,7 +16,7 @@ import java.util.List;
 public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecificationExecutor<Person> {
 
     @Query(
-            "SELECT new ru.pachan.main.dto.main.PersonDto(p.id, p.firstName, p.surname, p.organization.name)" +
+            "SELECT new ru.pachan.main.dto.main.PersonDto(p.id, p.firstName, p.organization.name)" +
             "FROM Person p" +
             "   WHERE " +
             "   (LOWER(firstName) LIKE CONCAT('%', LOWER(:firstName), '%') OR :firstName IS NULL)" +

@@ -36,8 +36,8 @@ public class Person implements Serializable {
     @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
-    private String surname;
+//    @Column(nullable = false)
+//    private String surname;
 
     @Column
     @Digits(integer = 10, fraction = 2)

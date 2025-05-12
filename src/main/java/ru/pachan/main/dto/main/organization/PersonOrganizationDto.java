@@ -10,5 +10,5 @@ import java.io.Serializable;
 public class PersonOrganizationDto implements Serializable {
     private long id;
     private String firstName;
-    private String surname;
+//    private String surname;
 }

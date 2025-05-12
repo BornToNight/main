@@ -47,8 +47,8 @@ public class OrganizationServiceImpl implements OrganizationService {
                                 organization.getPersons().stream().map(
                                         person -> new PersonOrganizationDto(
                                                 person.getId(),
-                                                person.getFirstName(),
-                                                person.getSurname()
+                                                person.getFirstName()
+//                                                person.getSurname()
                                         )
                                 ).collect(Collectors.toSet())
                         )
@@ -67,8 +67,8 @@ public class OrganizationServiceImpl implements OrganizationService {
                                 organization.getPersons().stream().map(
                                         person -> new PersonOrganizationDto(
                                                 person.getId(),
-                                                person.getFirstName(),
-                                                person.getSurname()
+                                                person.getFirstName()
+//                                                person.getSurname()
                                         )
                                 ).collect(Collectors.toSet())
                         )

@@ -126,9 +126,9 @@ public class RequestProvider {
 
         try {
             if (
-                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.GET.name()) ||
-                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.POST.name()) ||
-                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.PUT.name())
+                    Objects.equals(httpServletRequest.getMethod(), HttpMethod.GET.name())
+                    || Objects.equals(httpServletRequest.getMethod(), HttpMethod.POST.name())
+                    || Objects.equals(httpServletRequest.getMethod(), HttpMethod.PUT.name())
             ) {
                 if (
                         path.size() == 4 &&

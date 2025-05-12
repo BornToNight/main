@@ -17,6 +17,7 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 import ru.pachan.main.exception.data.RequestException;
 import ru.pachan.main.util.RequestLogger;
+import ru.pachan.main.util.enums.AuthorityEnum;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -69,7 +70,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (Objects.equals(username, adminUsername) && Objects.equals(password, adminPassword)) {
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                         null, null, Collections.singletonList(
-                        new SimpleGrantedAuthority("ActuatorAdmin")
+                        new SimpleGrantedAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())
                 )));
             } else {
                 RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, UNAUTHORIZED.getReasonPhrase());
@@ -84,7 +85,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     requestProvider.checkPermission(token, request);
                     SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                             null, null, Collections.singletonList(
-                            new SimpleGrantedAuthority("VerifiedToken")
+                            new SimpleGrantedAuthority(AuthorityEnum.VERIFIED_TOKEN.getAuthority())
                     )));
                 }
             } catch (RequestException e) {

@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import ru.pachan.main.util.enums.AuthorityEnum;
 
 import java.util.List;
 
@@ -38,9 +39,9 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(it -> it.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(it -> it
-                        .requestMatchers("api/auth/**").hasAuthority("VerifiedToken")
-                        .requestMatchers("actuator/**").hasAuthority("ActuatorAdmin")
-                        .requestMatchers("instances/**").hasAuthority("ActuatorAdmin")
+                        .requestMatchers("api/auth/**").hasAuthority(AuthorityEnum.VERIFIED_TOKEN.getAuthority())
+                        .requestMatchers("actuator/**").hasAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())
+                        .requestMatchers("instances/**").hasAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())
                         .anyRequest().authenticated())
                 .addFilterBefore(
                         new JwtFilter(requestProvider, adminUsername, adminPassword),

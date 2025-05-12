@@ -81,7 +81,7 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 String token = requestProvider.resolveToken(request);
                 if (requestProvider.validateToken(token)) {
-                    requestProvider.adminCheck(token, request);
+                    requestProvider.checkAdmin(token, request);
                     requestProvider.checkPermission(token, request);
                     SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                             null, null, Collections.singletonList(

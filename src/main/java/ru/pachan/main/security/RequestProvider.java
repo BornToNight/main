@@ -107,7 +107,7 @@ public class RequestProvider {
         }
     }
 
-    void adminCheck(String token, HttpServletRequest httpServletRequest) throws RequestException {
+    void checkAdmin(String token, HttpServletRequest httpServletRequest) throws RequestException {
         List<String> path = Arrays.stream(httpServletRequest.getRequestURI().split("/")).filter(it -> !it.isBlank()).toList();
         // < 2 - проверка для graphQL
         if (path.size() < 2 || !Objects.equals(path.get(1), "auth")) return;

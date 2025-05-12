@@ -131,10 +131,12 @@ public class RequestProvider {
                     || Objects.equals(httpServletRequest.getMethod(), HttpMethod.PUT.name())
             ) {
                 if (
-                        path.size() == 4 &&
-                        (Objects.equals(path.get(2), "user") || Objects.equals(path.get(2), "refresh")) ||
-                        path.size() == 3 && Objects.equals(path.get(2), "refresh")
-                ) return;
+                        path.size() == 4
+                        && (Objects.equals(path.get(2), "user") || Objects.equals(path.get(2), "refresh"))
+                        || path.size() == 3 && Objects.equals(path.get(2), "refresh")
+                ) {
+                    return;
+                }
             }
         } catch (NullPointerException e) {
             throw new RequestException(INVALID_PATH.getMessage(), INTERNAL_SERVER_ERROR);

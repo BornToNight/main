@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +28,6 @@ import java.util.UUID;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RequiredArgsConstructor
-@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
     private final RequestProvider requestProvider;
@@ -75,6 +73,7 @@ public class JwtFilter extends OncePerRequestFilter {
             } else {
                 RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, UNAUTHORIZED.getReasonPhrase());
                 response.sendError(UNAUTHORIZED.value(), UNAUTHORIZED.getReasonPhrase());
+                MDC.clear();
                 return;
             }
         } else {
@@ -92,6 +91,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.clearContext();
                 response.sendError(e.getHttpStatus().value(), e.getMessage());
                 RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, e.getMessage());
+                MDC.clear();
                 return;
             }
         }

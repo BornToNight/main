@@ -73,7 +73,7 @@ public class JwtFilter extends OncePerRequestFilter {
             } else {
                 RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, UNAUTHORIZED.getReasonPhrase());
                 response.sendError(UNAUTHORIZED.value(), UNAUTHORIZED.getReasonPhrase());
-                MDC.clear();
+                MDC.remove(REQUEST_ID);
                 return;
             }
         } else {
@@ -91,13 +91,13 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.clearContext();
                 response.sendError(e.getHttpStatus().value(), e.getMessage());
                 RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, e.getMessage());
-                MDC.clear();
+                MDC.remove(REQUEST_ID);
                 return;
             }
         }
         filterChain.doFilter(requestWrapper, responseWrapper);
         RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, "");
-        MDC.clear();
+        MDC.remove(REQUEST_ID);
     }
 
 }

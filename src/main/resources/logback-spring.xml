@@ -21,6 +21,9 @@
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>${LOGSTASH_HOST}:5000</destination>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${LOGSTASH_LOG_LEVEL}</level>
+        </filter>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <mdc />

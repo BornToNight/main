@@ -128,7 +128,7 @@ services:
       - "5000:5000/udp"
       - "9600:9600"
     environment:
-      LOG_LEVEL: debug
+      LOG_LEVEL: INFO
       LS_JAVA_OPTS: -Xms256m -Xmx256m
     networks:
       - elk

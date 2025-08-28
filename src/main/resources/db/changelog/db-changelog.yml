@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changes/createIndexPermissionsForUname.yml
   - include:
       file: db/changelog/changes/createShedlockTable.yml
+  - include:
+      file: db/changelog/v1/v1-changelog.yml

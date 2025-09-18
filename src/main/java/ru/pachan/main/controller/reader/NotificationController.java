@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.pachan.main.dto.reader.NotificationDto;
 import ru.pachan.main.exception.data.RequestException;
 import ru.pachan.main.exception.data.RequestSystemException;
-import ru.pachan.main.service.reader.notification.NotificationService;
+import ru.pachan.main.service.reader.NotificationService;
 
 @RequiredArgsConstructor
 @RestController

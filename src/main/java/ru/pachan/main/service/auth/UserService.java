@@ -1,4 +1,4 @@
-package ru.pachan.main.service.auth.user;
+package ru.pachan.main.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ import static ru.pachan.main.util.enums.ExceptionEnum.*;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService {
+public class UserService {
     private final UserRepository repository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenSearcher tokenSearcher;

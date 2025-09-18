@@ -1,4 +1,4 @@
-package ru.pachan.main.service.main.organization;
+package ru.pachan.main.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -23,19 +23,17 @@ import static ru.pachan.main.util.enums.ExceptionEnum.OBJECT_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
-public class OrganizationServiceImpl implements OrganizationService {
+public class OrganizationService {
 
     private final OrganizationRepository repository;
 
     // EXPLAIN_V Возможно обдумать и переделать (Evict) из-за pageable
     @Cacheable(value = "OrganizationService::getAll", key = "#pageable")
-    @Override
     public PaginatedResponse<Organization> getAll(Pageable pageable) {
         Page<Organization> result = repository.findAll(pageable);
         return new PaginatedResponse<>(result.getTotalElements(), result.getContent());
     }
 
-    @Override
     public PaginatedResponse<OrganizationDto> getAllWithEntityGraph(Pageable pageable) {
         Page<Organization> result = repository.findAllWithEntityGraphBy(pageable);
         return new PaginatedResponse<>(
@@ -55,7 +53,6 @@ public class OrganizationServiceImpl implements OrganizationService {
                 ).toList());
     }
 
-    @Override
     public PaginatedResponse<OrganizationDto> getAllWithEntityGraph2(Pageable pageable) {
         Page<Organization> result = repository.findAllWithEntityGraph2By(pageable);
         return new PaginatedResponse<>(
@@ -75,7 +72,6 @@ public class OrganizationServiceImpl implements OrganizationService {
                 ).toList());
     }
 
-    @Override
     @Cacheable(value = "OrganizationService::getOne", key = "#id")
     public Organization getOne(long id) throws RequestException {
         return repository.findById(id).orElseThrow(() ->
@@ -86,7 +82,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Caching(
             evict = @CacheEvict(value = "OrganizationService::getAll", allEntries = true)
     )
-    @Override
     public Organization createOne(Organization organization) {
         return repository.save(organization);
     }
@@ -95,7 +90,6 @@ public class OrganizationServiceImpl implements OrganizationService {
             put = @CachePut(value = "OrganizationService::getOne", key = "#id"),
             evict = @CacheEvict(value = "OrganizationService::getAll", allEntries = true)
     )
-    @Override
     public Organization updateOne(long id, Organization organization) throws RequestException {
         Organization oldOrganization = repository.findById(id).orElseThrow(() ->
                 new RequestException(OBJECT_NOT_FOUND.getMessage(), UNAUTHORIZED));
@@ -103,7 +97,6 @@ public class OrganizationServiceImpl implements OrganizationService {
         return repository.save(oldOrganization);
     }
 
-    @Override
     @Caching(evict = {
             @CacheEvict(value = "OrganizationService::getOne", key = "#id"),
             @CacheEvict(value = "OrganizationService::getAll", allEntries = true)

@@ -1,4 +1,4 @@
-package ru.pachan.main.service.main.person;
+package ru.pachan.main.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,41 +25,36 @@ import static ru.pachan.main.util.enums.ExceptionEnum.OBJECT_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
-public class PersonServiceImpl implements PersonService {
+public class PersonService {
 
     private final PersonRepository repository;
     private final PersonDao personDao;
     private final PersonMapper personMapper;
 
     @Transactional
-    @Override
     public PaginatedResponse<PersonDto> getAll(Pageable pageable, String firstName, List<String> firstNames) {
         Page<PersonDto> persons = repository.findAllPersonsDTOWithFilters(firstName, firstNames, pageable);
         return new PaginatedResponse<>(persons.getTotalElements(), persons.getContent());
     }
 
     @Transactional
-    @Override
     public PaginatedResponse<PersonNameDto> getAllNames(Pageable pageable) {
         Page<Person> persons = repository.findAll(pageable);
         return new PaginatedResponse<>(persons.getTotalElements(), personMapper.toPersonNameListDto(persons.getContent()));
     }
 
     @Transactional
-    @Override
     public PaginatedResponse<PersonNameAndOrgNameDto> getAllNamesAndOrgNames(Pageable pageable) {
         Page<Person> persons = repository.findAll(pageable);
         // ATTENTION будет n+1 - энтити граф может исправить ситуацию
         return new PaginatedResponse<>(persons.getTotalElements(), personMapper.toPersonNameAndOrgNameListDto(persons.getContent()));
     }
 
-    @Override
     public PaginatedResponse<PersonQueryBuilder> getAllWithSqlQueryBuilder(String firstName, List<String> firstNames) {
         return personDao.getPersons(firstName, firstNames);
     }
 
     @Transactional
-    @Override
     public PaginatedResponse<PersonDto> getAllWithSpecification(Pageable pageable, String firstName) {
         PersonSpecification specification = new PersonSpecification(firstName);
         Page<Person> persons = repository.findAll(specification, pageable);
@@ -67,19 +62,16 @@ public class PersonServiceImpl implements PersonService {
         return new PaginatedResponse<>(persons.getTotalElements(), result);
     }
 
-    @Override
     public Person getOne(long id) throws RequestException {
         return repository.findById(id).orElseThrow(() ->
                 new RequestException(OBJECT_NOT_FOUND.getMessage(), HttpStatus.GONE));
 
     }
 
-    @Override
     public Person createOne(Person person) {
         return repository.save(person);
     }
 
-    @Override
     public Person updateOne(long id, Person person) throws RequestException {
         Person oldPerson = repository.findById(id).orElseThrow(() ->
                 new RequestException(OBJECT_NOT_FOUND.getMessage(), UNAUTHORIZED));
@@ -90,7 +82,6 @@ public class PersonServiceImpl implements PersonService {
         return repository.save(oldPerson);
     }
 
-    @Override
     public void deleteOne(long id) {
         repository.deleteById(id);
     }

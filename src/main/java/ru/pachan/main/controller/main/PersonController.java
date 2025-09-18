@@ -25,7 +25,7 @@ import ru.pachan.main.dto.main.PersonNameAndOrgNameDto;
 import ru.pachan.main.dto.main.PersonNameDto;
 import ru.pachan.main.exception.data.RequestException;
 import ru.pachan.main.model.main.Person;
-import ru.pachan.main.service.main.person.PersonService;
+import ru.pachan.main.service.main.PersonService;
 
 import java.util.List;
 

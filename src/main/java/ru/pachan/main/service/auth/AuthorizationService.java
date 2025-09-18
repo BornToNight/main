@@ -1,4 +1,4 @@
-package ru.pachan.main.service.auth.authorization;
+package ru.pachan.main.service.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -22,7 +22,7 @@ import static ru.pachan.main.util.enums.ExceptionEnum.*;
 
 @RequiredArgsConstructor
 @Service
-public class AuthorizationServiceImpl implements AuthorizationService {
+public class AuthorizationService {
 
     @Value("${jwt.refresh-token-expiration}")
     private String refreshTime;

@@ -20,7 +20,7 @@ import ru.pachan.main.dto.dictionary.PaginatedResponse;
 import ru.pachan.main.dto.main.organization.OrganizationDto;
 import ru.pachan.main.exception.data.RequestException;
 import ru.pachan.main.model.main.Organization;
-import ru.pachan.main.service.main.organization.OrganizationService;
+import ru.pachan.main.service.main.OrganizationService;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 

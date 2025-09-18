@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.pachan.main.dto.auth.AuthorizationDto;
 import ru.pachan.main.dto.auth.RefreshDataDto;
 import ru.pachan.main.exception.data.RequestException;
-import ru.pachan.main.service.auth.authorization.AuthorizationService;
+import ru.pachan.main.service.auth.AuthorizationService;
 
 @CrossOrigin
 @RestController
@@ -22,6 +22,7 @@ import ru.pachan.main.service.auth.authorization.AuthorizationService;
 @RequestMapping("api/auth")
 @Tag(name = "Authorization")
 class AuthorizationController {
+
     public final AuthorizationService service;
 
     @Operation(

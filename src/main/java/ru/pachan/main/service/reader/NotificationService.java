@@ -1,4 +1,4 @@
-package ru.pachan.main.service.reader.notification;
+package ru.pachan.main.service.reader;
 
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -26,7 +26,7 @@ import static ru.pachan.main.util.enums.ExceptionEnum.SYSTEM_ERROR;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements NotificationService {
+public class NotificationService {
 
     private static final String CIRCUIT_BREAKER_NAME = "writerCircuitBreaker";
     private static final String RETRY_NAME = "writerRetry";

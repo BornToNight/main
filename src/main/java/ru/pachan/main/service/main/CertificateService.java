@@ -1,4 +1,4 @@
-package ru.pachan.main.service.main.certificate;
+package ru.pachan.main.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,29 +18,25 @@ import static ru.pachan.main.util.enums.ExceptionEnum.OBJECT_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
-public class CertificateServiceImpl implements CertificateService {
+public class CertificateService {
 
     private final CertificateRepository repository;
 
-    @Override
     public PaginatedResponse<Certificate> getAll(Pageable pageable) {
         Page<Certificate> result = repository.findAll(pageable);
 
         return new PaginatedResponse<>(result.getTotalElements(), result.getContent());
     }
 
-    @Override
     public Certificate getOne(long id) throws RequestException {
         return repository.findById(id).orElseThrow(() ->
                 new RequestException(OBJECT_NOT_FOUND.getMessage(), HttpStatus.GONE));
     }
 
-    @Override
     public Certificate createOne(Certificate certificate) {
         return repository.save(certificate);
     }
 
-    @Override
     public Certificate updateOne(long id, Certificate certificate) throws RequestException {
         Certificate oldCertificate = repository.findById(id).orElseThrow(() ->
                 new RequestException(OBJECT_NOT_FOUND.getMessage(), UNAUTHORIZED));
@@ -48,12 +44,10 @@ public class CertificateServiceImpl implements CertificateService {
         return repository.save(oldCertificate);
     }
 
-    @Override
     public void deleteOne(long id) {
         repository.deleteById(id);
     }
 
-    @Override
     public void massiveCreation() {
         int threadCount = 3;
         try (ExecutorService executor = Executors.newFixedThreadPool(threadCount)) {

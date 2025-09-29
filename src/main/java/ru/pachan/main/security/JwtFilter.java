@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static ru.pachan.main.util.enums.MdcKeyEnum.*;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -33,8 +34,6 @@ public class JwtFilter extends OncePerRequestFilter {
     private final RequestProvider requestProvider;
     private final String adminUsername;
     private final String adminPassword;
-
-    private static final String REQUEST_ID = "requestId";
 
     @Override
     protected void doFilterInternal(
@@ -45,59 +44,66 @@ public class JwtFilter extends OncePerRequestFilter {
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
-        String requestId = request.getHeader(REQUEST_ID);
-        if (requestId == null) {
-            requestId = UUID.randomUUID().toString();
+        String requestUid = request.getHeader(REQUEST_UID.getKey());
+        if (requestUid == null) {
+            requestUid = UUID.randomUUID().toString();
         }
 
-        MDC.put(REQUEST_ID, requestId);
+        var url = request.getRequestURI();
 
-        if (request.getRequestURI().startsWith("/actuator")) {
-            String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        MDC.put(REQUEST_UID.getKey(), requestUid);
+        MDC.put(REQUEST_URL.getKey(), url);
 
-            var username = "";
-            var password = "";
+        try {
+            if (url.startsWith("/actuator")) {
+                String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-            if (authHeader != null && authHeader.startsWith("Basic ")) {
-                String base64Credentials = authHeader.substring("Basic ".length()).trim();
-                String credentials = new String(Base64.getDecoder().decode(base64Credentials), StandardCharsets.UTF_8);
-                String[] loginAndPassword = credentials.split(":", 2);
-                username = loginAndPassword[0];
-                password = loginAndPassword[1];
-            }
-            if (Objects.equals(username, adminUsername) && Objects.equals(password, adminPassword)) {
-                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
-                        null, null, Collections.singletonList(
-                        new SimpleGrantedAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())
-                )));
-            } else {
-                RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, UNAUTHORIZED.getReasonPhrase());
-                response.sendError(UNAUTHORIZED.value(), UNAUTHORIZED.getReasonPhrase());
-                MDC.remove(REQUEST_ID);
-                return;
-            }
-        } else {
-            try {
-                String token = requestProvider.resolveToken(request);
-                if (requestProvider.validateToken(token)) {
-                    requestProvider.checkAdmin(token, request);
-                    requestProvider.checkPermission(token, request);
+                var username = "";
+                var password = "";
+
+                if (authHeader != null && authHeader.startsWith("Basic ")) {
+                    String base64Credentials = authHeader.substring("Basic ".length()).trim();
+                    String credentials = new String(Base64.getDecoder().decode(base64Credentials), StandardCharsets.UTF_8);
+                    String[] loginAndPassword = credentials.split(":", 2);
+                    username = loginAndPassword[0];
+                    password = loginAndPassword[1];
+                }
+                if (Objects.equals(username, adminUsername) && Objects.equals(password, adminPassword)) {
                     SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                             null, null, Collections.singletonList(
-                            new SimpleGrantedAuthority(AuthorityEnum.VERIFIED_TOKEN.getAuthority())
+                            new SimpleGrantedAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())
                     )));
+                } else {
+                    RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, UNAUTHORIZED.getReasonPhrase());
+                    response.sendError(UNAUTHORIZED.value(), UNAUTHORIZED.getReasonPhrase());
+                    return;
                 }
-            } catch (RequestException e) {
-                SecurityContextHolder.clearContext();
-                response.sendError(e.getHttpStatus().value(), e.getMessage());
-                RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, e.getMessage());
-                MDC.remove(REQUEST_ID);
-                return;
+            } else {
+                try {
+                    String token = requestProvider.resolveToken(request);
+                    if (requestProvider.validateToken(token)) {
+                        requestProvider.checkAdmin(token, request);
+                        requestProvider.checkPermission(token, request);
+                        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                                null, null, Collections.singletonList(
+                                new SimpleGrantedAuthority(AuthorityEnum.VERIFIED_TOKEN.getAuthority())
+                        )));
+                    }
+                } catch (RequestException e) {
+                    SecurityContextHolder.clearContext();
+                    response.sendError(e.getHttpStatus().value(), e.getMessage());
+                    RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, e.getMessage());
+                    return;
+                }
             }
+            filterChain.doFilter(requestWrapper, responseWrapper);
+            RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, "");
+        } finally {
+            MDC.remove(REQUEST_UID.getKey());
+            MDC.remove(REQUEST_URL.getKey());
+            MDC.remove(USER_ID.getKey());
         }
-        filterChain.doFilter(requestWrapper, responseWrapper);
-        RequestLogger.writeSlf4jLog(requestWrapper, responseWrapper, requestProvider, "");
-        MDC.remove(REQUEST_ID);
+
     }
 
 }

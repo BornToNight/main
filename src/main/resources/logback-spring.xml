@@ -25,6 +25,9 @@
             <level>${LOGSTASH_LOG_LEVEL}</level>
         </filter>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <staticFiled>requestUid:-</staticFiled>
+            <staticFiled>requestUrl:-</staticFiled>
+            <staticFiled>userId:-</staticFiled>
             <providers>
                 <mdc />
                 <context />

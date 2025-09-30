@@ -47,13 +47,13 @@ public class RequestLogger {
         message.append(" | ");
 
         if (isPostMethod(method)) {
-            String requestBody = extractPostRequestBody(requestWrapper);
+            String requestBody = extractPostRequestBody(requestWrapper).trim();
             if (!requestBody.isBlank()) {
                 message.append("Request body - ").append(requestBody);
                 message.append(" | ");
             }
         }
-        message.append("Response body - ").append(extractResponseBody(responseWrapper));
+        message.append("Response body - ").append(extractResponseBody(responseWrapper).trim());
 
         message.append(!exceptionMessage.isBlank() ? " | " + exceptionMessage : "");
 

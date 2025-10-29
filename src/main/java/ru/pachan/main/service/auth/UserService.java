@@ -80,6 +80,8 @@ public class UserService {
         if (user.isPresent()) {
             if (Objects.equals(user.get().getLogin(), "admin")) {
                 throw new RequestException(PERMISSION_DENIED.getMessage(), FORBIDDEN);
+            } else {
+                repository.delete(user.get());
             }
         }
     }

@@ -41,12 +41,12 @@ public class UserService {
 
     public PaginatedResponse<User> getAll(Pageable pageable) {
         Page<User> result = repository.findAll(pageable);
-        return new PaginatedResponse<>(result.getTotalPages(), result.getContent());
+        return new PaginatedResponse<>(result.getTotalElements(), result.getContent());
     }
 
     public User getOne(long id, String token) throws RequestException {
         if (tokenSearcher.isAdmin(token) || tokenSearcher.isOriginalUser(token, id)) {
-            User result = repository.findById(id).orElseThrow(() -> new RequestException(OBJECT_NOT_FOUND.getMessage(), GONE));
+            User result = repository.findById(id).orElseThrow(() -> new RequestException(OBJECT_NOT_FOUND.getMessage(), NOT_FOUND));
             result.setPassword("");
             return result;
         } else {
@@ -56,7 +56,7 @@ public class UserService {
 
     public User updateOne(long id, String token, User user) throws RequestException {
         user.setId(id);
-        User old = repository.findById(id).orElseThrow(() -> new RequestException(OBJECT_NOT_FOUND.getMessage(), GONE));
+        User old = repository.findById(id).orElseThrow(() -> new RequestException(OBJECT_NOT_FOUND.getMessage(), NOT_FOUND));
         if (Objects.equals(user.getLogin(), "admin")) {
             throw new RequestException(PERMISSION_DENIED.getMessage(), FORBIDDEN);
         }

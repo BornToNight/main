@@ -64,7 +64,7 @@ public class PersonService {
 
     public Person getOne(long id) throws RequestException {
         return repository.findById(id).orElseThrow(() ->
-                new RequestException(OBJECT_NOT_FOUND.getMessage(), HttpStatus.GONE));
+                new RequestException(OBJECT_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND));
 
     }
 

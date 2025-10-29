@@ -41,7 +41,7 @@ public class AuthorizationService {
         User user = userRepository.findByLogin(authorizationDto.login()).orElseThrow(() ->
                 new RequestException(
                         OBJECT_NOT_FOUND.getMessage(),
-                        GONE
+                        NOT_FOUND
                 ));
         if (new BCryptPasswordEncoder().matches(authorizationDto.password(), user.getPassword())) {
             return generateJWT(user, null);

@@ -10,13 +10,15 @@ import ru.pachan.main.model.auth.PermissionLevel;
 public interface PermissionLevelRepository extends JpaRepository<PermissionLevel, Long> {
 
     @Query(
-            "SELECT pl.permissionLevel" +
-            " FROM PermissionLevel pl " +
-            "   JOIN pl.rolePermissionPermissionLevels.permission p " +
-            "   JOIN pl.rolePermissionPermissionLevels.role r " +
-            "   WHERE" +
-            "   r.id = :roleId " +
-            "   AND p.uname = :permissionUname"
+            """
+            SELECT pl.permissionLevel
+                FROM PermissionLevel pl
+                    JOIN pl.rolePermissionPermissionLevels.permission p
+                    JOIN pl.rolePermissionPermissionLevels.role r
+                WHERE
+                    r.id = :roleId
+                    AND p.uname = :permissionUname
+            """
     )
     Short findPermissionLevelByRoleIdAndPermissionUname(
             @Param("roleId") Long roleId,

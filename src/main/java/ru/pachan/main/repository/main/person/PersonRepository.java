@@ -16,11 +16,13 @@ import java.util.List;
 public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecificationExecutor<Person> {
 
     @Query(
-            "SELECT new ru.pachan.main.dto.main.PersonDto(p.id, p.firstName, p.organization.name)" +
-            "FROM Person p" +
-            "   WHERE " +
-            "   (LOWER(firstName) LIKE CONCAT('%', LOWER(:firstName), '%') OR :firstName IS NULL)" +
-            "   AND (firstName IN (:firstNames) OR :firstNames IS NULL )"
+            """
+            SELECT new ru.pachan.main.dto.main_kotlin.PersonDto(p.id, p.firstName, p.organization.name)
+                FROM Person p
+                WHERE
+                    (LOWER(firstName) LIKE CONCAT('%', LOWER(:firstName), '%') OR :firstName IS NULL)
+                    AND (firstName IN (:firstNames) OR :firstNames IS NULL )
+            """
     )
     Page<PersonDto> findAllPersonsDTOWithFilters(
             @Param("firstName") String firstName,

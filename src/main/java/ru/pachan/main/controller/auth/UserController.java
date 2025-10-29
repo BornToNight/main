@@ -52,9 +52,12 @@ class UserController {
     @Operation(summary = "Возвращение пользователя по переданному id")
     @GetMapping("/{id}")
     public ResponseEntity<User> getOne(
+
             @Parameter(description = "Id пользователя")
             @PathVariable Long id,
+
             @RequestHeader("Authorization") String authToken
+
     ) throws RequestException {
         return ResponseEntity.ok(service.getOne(id, authToken));
     }
@@ -63,10 +66,14 @@ class UserController {
     @Operation(summary = "Обновление пользователя", description = "Обновляет данные пользователя с переданным id")
     @PostMapping("/{id}")
     public ResponseEntity<User> updateOne(
+
             @Parameter(description = "Id пользователя")
             @PathVariable("id") Long id,
+
             @RequestBody User user,
+
             @RequestHeader("Authorization") String authToken
+
     ) throws RequestException {
         return ResponseEntity.ok(service.updateOne(id, authToken, user));
     }

@@ -44,10 +44,13 @@ public class PersonController {
     @GetMapping
     public ResponseEntity<PaginatedResponse<PersonDto>> getAll(
             @ParameterObject Pageable pageable,
+
             @Parameter(description = "Фильтр по имени сотрудника")
             @RequestParam(required = false) String firstName,
+
             @Parameter(description = "Фильтр по именам сотрудника")
             @RequestParam(required = false) List<String> firstNames
+
     ) {
         // EXPLAIN_V Пример для сохранения в elastic
         log.info("PersonController getAll");

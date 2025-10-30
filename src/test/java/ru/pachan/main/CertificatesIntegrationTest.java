@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -26,7 +25,6 @@ import ru.pachan.main.dto.dictionary.PaginatedResponse;
 import ru.pachan.main.model.main.Certificate;
 import ru.pachan.main.repository.main.CertificateRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,14 +32,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-// @ActiveProfiles("test")
 class CertificatesIntegrationTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
-
-    @Autowired
-    private WebTestClient webTestClient;
 
     @Autowired
     private CertificateRepository certificateRepository;
@@ -61,79 +55,90 @@ class CertificatesIntegrationTest {
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
     }
 
+    private HttpHeaders createHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(
+                "Authorization",
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVJZCI6MSwiaWF0IjoxNzIxMTI0" +
+                "ODE1LCJleHAiOjE3MjExMjUxMTU5fQ.Vra7txDcKhzN_lJtneuijoUttm20cueLTHAZH3vc5Mg"
+        );
+        return headers;
+    }
+
     @Order(1)
     @Test
-    @DisplayName("Check Certificates API with PostgreSQL with WebTestClient")
-    void shouldReturnAllCertificatesWithWebTestClient() {
+    @DisplayName("Check Certificates API with PostgreSQL - first batch")
+    void shouldReturnFirstBatchOfCertificates() {
+        // Setup
         var certificate1 = new Certificate();
         certificate1.setCode("codeTest1");
 
         var certificate2 = new Certificate();
         certificate2.setCode("codeTest2");
 
-        this.certificateRepository.save(certificate1);
-        this.certificateRepository.save(certificate2);
+        certificateRepository.save(certificate1);
+        certificateRepository.save(certificate2);
 
-        this.webTestClient.get()
-                .uri("api/main/certificate")
-                .headers(header -> header.setBearerAuth(
-                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVJZCI6MSwiaWF0IjoxNzIxMTI0" +
-                                "ODE1LCJleHAiOjE3MjExMjUxMTU5fQ.Vra7txDcKhzN_lJtneuijoUttm20cueLTHAZH3vc5Mg")
-                )
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().is2xxSuccessful()
-                .expectBody()
-                .jsonPath("result.length()").isEqualTo(2)
-                .jsonPath("total").isEqualTo(2)
-                .jsonPath("result[0].id").isEqualTo(1)
-                .jsonPath("result[0].code").isEqualTo("codeTest1")
-                .jsonPath("result[1].id").isEqualTo(2)
-                .jsonPath("result[1].code").isEqualTo("codeTest2");
+        // Execute
+        ResponseEntity<PaginatedResponse> response = testRestTemplate.exchange(
+                "http://localhost:" + port + "/api/main/certificate",
+                HttpMethod.GET,
+                new HttpEntity<>(createHeaders()),
+                PaginatedResponse.class
+        );
+
+        // Verify
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertNotNull(response.getBody());
+
+        var mapper = new ObjectMapper();
+        List<Certificate> certificateList = mapper.convertValue(
+                response.getBody().result(),
+                new TypeReference<List<Certificate>>() {}
+        );
+
+        assertEquals(2, certificateList.size());
+        assertEquals("codeTest1", certificateList.get(0).getCode());
+        assertEquals("codeTest2", certificateList.get(1).getCode());
+        assertEquals(2, response.getBody().total());
     }
 
     @Order(10)
     @Test
-    @DisplayName("Check Certificates API with PostgreSQL with TestRestTemplate")
+    @DisplayName("Check Certificates API with PostgreSQL - second batch")
     void shouldReturnAllCertificatesWithTestRestTemplate() {
+        // Setup
         var certificate3 = new Certificate();
         certificate3.setCode("codeTest3");
 
         var certificate4 = new Certificate();
         certificate4.setCode("codeTest4");
 
-        this.certificateRepository.save(certificate3);
-        this.certificateRepository.save(certificate4);
+        certificateRepository.save(certificate3);
+        certificateRepository.save(certificate4);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(
-                "Authorization",
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVJZCI6MSwiaWF0IjoxNzIxMTI0ODE1LCJleH" +
-                        "AiOjE3MjExMjUxMTU5fQ.Vra7txDcKhzN_lJtneuijoUttm20cueLTHAZH3vc5Mg"
-        );
-
+        // Execute
         ResponseEntity<PaginatedResponse> response = testRestTemplate.exchange(
                 "http://localhost:" + port + "/api/main/certificate",
                 HttpMethod.GET,
-                new HttpEntity<>(headers),
+                new HttpEntity<>(createHeaders()),
                 PaginatedResponse.class
         );
 
-        var mapper = new ObjectMapper();
-        List<Certificate> certificateList = new ArrayList<>();
+        // Verify
         assertTrue(response.getStatusCode().is2xxSuccessful());
         assertNotNull(response.getBody());
 
-        try {
-            certificateList = mapper.convertValue(response.getBody().result(), new TypeReference<List<Certificate>>() {
-            });
-        } catch (IllegalArgumentException e) {
-            System.err.println("not deserializable object");
-        }
+        var mapper = new ObjectMapper();
+        List<Certificate> certificateList = mapper.convertValue(
+                response.getBody().result(),
+                new TypeReference<List<Certificate>>() {}
+        );
 
         assertEquals(4, certificateList.size());
         assertEquals("codeTest3", certificateList.get(2).getCode());
         assertEquals("codeTest4", certificateList.get(3).getCode());
+        assertEquals(4, response.getBody().total());
     }
-
 }

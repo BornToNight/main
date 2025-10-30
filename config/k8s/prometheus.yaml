@@ -43,7 +43,7 @@ data:
         scrape_interval: 15s
         metrics_path: '/actuator/prometheus'
         static_configs:
-          - targets: [ 'main:5001', 'reader:5002', 'writer:5003' ]
+          - targets: [ 'main:5001', 'reader:5012', 'writer:5003' ]
         basic_auth:
           username: userAdmin
           password: passwordAdmin

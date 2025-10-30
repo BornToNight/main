@@ -52,8 +52,6 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka:$kafkaVer")
     implementation("ru.pachan:proto-common:$protoCommonVer")
     implementation("net.devh:grpc-client-spring-boot-starter:$grpcVer")
-//	EXPLAIN_V Для интеграционных тестов
-    implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootStarterVer")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVer")
     implementation("net.javacrumbs.shedlock:shedlock-spring:$shedlockVer")
     implementation("net.javacrumbs.shedlock:shedlock-provider-jdbc-template:$shedlockVer")

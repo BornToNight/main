@@ -17,7 +17,7 @@ import static ru.pachan.main.util.enums.MdcKeyEnum.USER_ID;
 @Slf4j
 public class RequestLogger {
 
-    private static final int MAX_BODY_LENGTH = 10 * 1024; // 10 KB
+    private static final int MAX_BODY_LENGTH_KB = 10 * 1024;
 
     public static void writeSlf4jLog(
             ContentCachingRequestWrapper requestWrapper,
@@ -99,8 +99,8 @@ public class RequestLogger {
     }
 
     private static String truncate(String body) {
-        if (MAX_BODY_LENGTH > body.length()) return body;
-        return body.substring(0, MAX_BODY_LENGTH) + "... [truncated]";
+        if (MAX_BODY_LENGTH_KB > body.length()) return body;
+        return body.substring(0, MAX_BODY_LENGTH_KB) + "... [truncated]";
     }
 
 }

@@ -19,15 +19,11 @@ public class RolePermissionPermissionLevelId implements Serializable {
     private Long permissionLevelId;
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj.getClass() != this.getClass()) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        RolePermissionPermissionLevelId rolePermissionPermissionLevelId = (RolePermissionPermissionLevelId) obj;
+        RolePermissionPermissionLevelId rolePermissionPermissionLevelId = (RolePermissionPermissionLevelId) o;
         return Objects.equals(this.roleId, rolePermissionPermissionLevelId.roleId) &&
                Objects.equals(this.permissionId, rolePermissionPermissionLevelId.permissionId) &&
                Objects.equals(this.permissionLevelId, rolePermissionPermissionLevelId.permissionLevelId);

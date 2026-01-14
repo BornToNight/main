@@ -22,7 +22,7 @@ public class TokenSearcher {
     private final UserRepository userRepository;
 
     public boolean isAdmin(String token) throws RequestException {
-        return !Objects.equals(userRepository.findById(Long.parseLong(getPayloadField(token, "userId"))).orElseThrow(() ->
+        return Objects.equals(userRepository.findById(Long.parseLong(getPayloadField(token, "userId"))).orElseThrow(() ->
                 new RequestException(USER_IS_MISSING.getMessage(), UNAUTHORIZED)
         ).getRole().getName(), ADMIN);
 

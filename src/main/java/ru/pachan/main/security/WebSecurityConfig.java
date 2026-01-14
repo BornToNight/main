@@ -39,6 +39,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(it -> it.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(it -> it
+                        // TODO выглядит лишним
                         .requestMatchers("api/auth/**").hasAuthority(AuthorityEnum.VERIFIED_TOKEN.getAuthority())
                         .requestMatchers("actuator/**").hasAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())
                         .requestMatchers("instances/**").hasAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())

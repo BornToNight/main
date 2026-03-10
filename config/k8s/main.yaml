@@ -3,14 +3,17 @@ kind: Service
 metadata:
   name: main
 spec:
+  type: ClusterIP # По умолчанию
   selector:
     app: main
   ports:
-    - protocol: TCP
-      name: main
+    - protocol: TCP # По умолчанию
+      name: http-api
       port: 5001
       targetPort: 5001
-
+    - name: actuator
+      port: 5101
+      targetPort: 5101
 ---
 
 apiVersion: apps/v1
@@ -23,8 +26,8 @@ spec:
   minReadySeconds: 10
   strategy:
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
+      maxSurge: 1 # макс сверху реплик (реплики + это)
+      maxUnavailable: 1 # макс недоступных (реплики - это)
     type: RollingUpdate
   replicas: 2
   selector:
@@ -34,23 +37,33 @@ spec:
     metadata:
       labels:
         app: main
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5101"
+        prometheus.io/path: "/actuator/prometheus"
     spec:
       containers:
         - name: main
           image: borntonight/main:1
+          imagePullPolicy: Never # Не загружать из интернета
           ports:
             - containerPort: 5001
+              name: http-api
+            - containerPort: 5101
+              name: actuator
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "250m"
+            limits:
+              memory: "600Mi"
+              cpu: "500m"
           env:
-            - name: SPRING_USER
+            - name: SERVICE_HOST
               valueFrom:
                 secretKeyRef:
                   name: my-secret
-                  key: SPRING_USER
-            - name: SPRING_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: my-secret
-                  key: SPRING_PASSWORD
+                  key: SERVICE_HOST_MAIN
             - name: SPRING_ADMIN_HOST
               valueFrom:
                 secretKeyRef:
@@ -151,4 +164,3 @@ spec:
                 secretKeyRef:
                   name: my-secret
                   key: TASK_INCREASE_COUNT_INITIAL_DELAY
-

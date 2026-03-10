@@ -1,9 +1,9 @@
-package ru.pachan.main.security;
+package ru.pachan.main.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,15 +25,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    @Value("${spring.boot.admin.client.username}")
-    private String adminUsername;
-
-    @Value("${spring.boot.admin.client.password}")
-    private String adminPassword;
-
     private final RequestProvider requestProvider;
 
     @Bean
+    @Order(1)
+    public SecurityFilterChain managementFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .securityMatcher("actuator/**")
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth ->
+                        auth
+                                // EXPLAIN_V Без Spring Admin достаточно было бы 2 ЭП этих
+                                // .requestMatchers("actuator/prometheus").permitAll()
+                                // .requestMatchers("actuator/health").permitAll()
+                                .requestMatchers("actuator/**").permitAll()
+                                .anyRequest().denyAll()
+                );
+        return httpSecurity.build();
+    }
+
+    @Bean
+    @Order(2)
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -41,12 +55,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(it -> it
                         // TODO выглядит лишним
                         .requestMatchers("api/auth/**").hasAuthority(AuthorityEnum.VERIFIED_TOKEN.getAuthority())
-                        .requestMatchers("actuator/**").hasAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())
-                        .requestMatchers("instances/**").hasAuthority(AuthorityEnum.ACTUATOR_ADMIN.getAuthority())
                         .anyRequest().authenticated())
                 .addFilterBefore(
-                        new JwtFilter(requestProvider, adminUsername, adminPassword),
-                        BasicAuthenticationFilter.class
+                        new JwtFilter(requestProvider),
+                        UsernamePasswordAuthenticationFilter.class
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
         return httpSecurity.build();

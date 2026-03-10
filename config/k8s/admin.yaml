@@ -32,6 +32,7 @@ spec:
       containers:
         - name: admin
           image: borntonight/admin:1
+          imagePullPolicy: Never
           ports:
             - containerPort: 5004
           env:

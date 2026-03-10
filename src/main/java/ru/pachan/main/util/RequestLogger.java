@@ -6,7 +6,7 @@ import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
-import ru.pachan.main.security.RequestProvider;
+import ru.pachan.main.config.security.RequestProvider;
 
 import java.io.IOException;
 import java.util.Base64;

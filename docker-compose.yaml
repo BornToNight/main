@@ -7,6 +7,30 @@ x-logging: &default-logging
 
 services:
 
+  main:
+    container_name: main
+    <<: *default-logging
+    build: .
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+      - logstash
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      GRAFANA_USER: ${GRAFANA_USER}
+      GRAFANA_PASSWORD: ${GRAFANA_PASSWORD}
+      LOGSTASH_HOST: ${LOGSTASH_HOST}
+      LOGSTASH_LOG_LEVEL: ${LOGSTASH_LOG_LEVEL}
+    networks:
+      - default
+      - elk
+      - monitoring
+
+
   postgres:
     container_name: postgres
     <<: *default-logging
@@ -40,19 +64,17 @@ services:
   prometheus:
     container_name: prometheus
     <<: *default-logging
-    build:
-      context: config/prometheus
-      args:
-        SPRING_USER: ${SPRING_USER}
-        SPRING_PASSWORD: ${SPRING_PASSWORD}
+    image: prom/prometheus:v3.3.1
     ports:
       - "9090:9090"
     volumes:
-      - prometheus:/prometheus
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       monitoring:
         aliases:
           - prometheus
+    depends_on:
+      - main
 
   zookeeper:
     container_name: zookeeper

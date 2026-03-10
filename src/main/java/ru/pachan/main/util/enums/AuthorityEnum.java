@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public enum AuthorityEnum {
 
-    VERIFIED_TOKEN("VerifiedToken"),
-    ACTUATOR_ADMIN("ActuatorAdmin");
+    VERIFIED_TOKEN("VerifiedToken");
 
     private final String authority;
 }

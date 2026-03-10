@@ -49,7 +49,7 @@ class CertificatesIntegrationTest {
             .withPassword("password");
 
     @DynamicPropertySource
-    static void postgresqlProperties(DynamicPropertyRegistry registry) {
+    static void properties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);

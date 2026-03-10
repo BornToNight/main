@@ -1,4 +1,4 @@
-package ru.pachan.main.security;
+package ru.pachan.main.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

@@ -10,6 +10,9 @@ spec:
       name: reader
       port: 5002
       targetPort: 5002
+    - name: actuator
+      port: 5102
+      targetPort: 5102
 
 ---
 
@@ -38,19 +41,18 @@ spec:
       containers:
         - name: reader
           image: borntonight/reader:1
-#          ports:
-#            - containerPort: 5002
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5002
+              name: http-api
+            - containerPort: 5102
+              name: actuator
           env:
-            - name: SPRING_USER
+            - name: SERVICE_HOST
               valueFrom:
                 secretKeyRef:
                   name: my-secret
-                  key: SPRING_USER
-            - name: SPRING_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: my-secret
-                  key: SPRING_PASSWORD
+                  key: SERVICE_HOST_READER
             - name: SPRING_ADMIN_HOST
               valueFrom:
                 secretKeyRef:
@@ -96,4 +98,3 @@ spec:
                 secretKeyRef:
                   name: my-secret
                   key: LOGSTASH_HOST
-

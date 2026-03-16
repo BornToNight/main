@@ -39,3 +39,10 @@ spec:
           image: kibana:8.15.0
           ports:
             - containerPort: 5601
+          resources:
+            requests:
+              memory: "850Mi"
+              cpu: "250m"
+            limits:
+              memory: "950Mi"
+              cpu: "300m"
